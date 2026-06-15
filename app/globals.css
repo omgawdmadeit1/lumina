@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  /* Epic Lumina / Trek-inspired palette */
+  --tesla-red: #E31937;
+  --neon-cyan: #00f9ff;
+  --void: #0a0a0a;
+  --gold: #ffd700;
+  --glass: rgba(10, 10, 10, 0.85);
+  --border-subtle: rgba(227, 25, 55, 0.2);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  font-family: var(--font-geist-sans);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Epic HUD / Cyber aesthetic (inspired by Tesla Trek v4 + plan) */
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(227,25,55,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(227,25,55,0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+}
+
+.hud-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 48%, rgba(227,25,55,0.06) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  animation: scan 1.4s linear infinite;
+  z-index: 10;
+}
+
+@keyframes scan {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 200px; }
+}
+
+.tesla-red { color: var(--tesla-red); }
+.neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
+.gold { color: var(--gold); }
+
+.epic-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.epic-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: 0.6s;
+}
+
+.epic-btn:hover::before {
+  left: 250%;
+}
+
+.grok-orb {
+  animation: orb-pulse 3s ease-in-out infinite;
+}
+
+@keyframes orb-pulse {
+  0%, 100% { box-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-cyan); }
+  50% { box-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-cyan); }
+}
+
+.protocol-header {
+  text-shadow: 0 0 10px rgba(227,25,55,0.5);
+  animation: pulse-red 4s ease-in-out infinite;
+}
+
+@keyframes pulse-red {
+  0%, 100% { text-shadow: 0 0 10px rgba(227,25,55,0.5); }
+  50% { text-shadow: 0 0 20px rgba(227,25,55,0.8); }
+}
+
+.section-header {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tesla-red);
+  font-weight: 600;
+}
+
+/* Review gate / human log emphasis */
+.review-gate {
+  border-left: 3px solid var(--tesla-red);
+}
+
+.log-entry {
+  animation: log-pop 0.4s ease-out forwards;
+}
+
+@keyframes log-pop {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
