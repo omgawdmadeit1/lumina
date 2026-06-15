@@ -61,8 +61,28 @@ export default function LuminaDashboard() {
   };
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("lumina_projects") || "[]");
-    setProjects(saved);
+    // Server-first load for durable prototype state (projects, listings, claims via new /api/lumina/*)
+    (async () => {
+      try {
+        const res = await fetch('/api/lumina/load');
+        if (res.ok) {
+          const { projects: sp = [], listings: sl = [], claims: sc = [] } = await res.json();
+          if (Array.isArray(sp) && sp.length) {
+            setProjects(sp);
+            localStorage.setItem("lumina_projects", JSON.stringify(sp));
+          }
+          if (Array.isArray(sl) && sl.length) {
+            localStorage.setItem("lumina_listings", JSON.stringify(sl));
+          }
+          if (Array.isArray(sc) && sc.length) {
+            localStorage.setItem("lumina_claims", JSON.stringify(sc));
+          }
+        }
+      } catch {}
+      // fall through to local for any missing
+      const saved = JSON.parse(localStorage.getItem("lumina_projects") || "[]");
+      setProjects(saved);
+    })();
 
     // Load Plaid-connected banks (prototype - in prod use secure backend + Plaid access_tokens)
     const banks = JSON.parse(localStorage.getItem("lumina_plaid_banks") || "[]");
@@ -79,7 +99,7 @@ export default function LuminaDashboard() {
     const savedFund = JSON.parse(localStorage.getItem("lumina_cyberbeast_fund") || "null");
     const txns = JSON.parse(localStorage.getItem("lumina_cashflow_txns") || "[]");
     const listingsCount = listings.length;
-    const dogeLinks = saved.length; // proxy for metered usage
+    const dogeLinks = (projects?.length || listingsCount || 0); // proxy for metered usage (projects or listings)
     if (savedFund) {
       const updated = computeFundMetrics(savedFund, txns, listingsCount, dogeLinks);
       setCyberbeastFund(updated);

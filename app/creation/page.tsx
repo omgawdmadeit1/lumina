@@ -121,9 +121,15 @@ export default function CreationStudio() {
     const projectWithPayment = { ...newProject, dogePay: { ...doge, qrDataUrl } } as any;
     setProject(projectWithPayment);
 
-    // Persist to localStorage (simple "DB" for prototype)
+    // Persist to localStorage + server durable store (new /api/lumina/save for prototype completeness)
     const existing = JSON.parse(localStorage.getItem("lumina_projects") || "[]");
-    localStorage.setItem("lumina_projects", JSON.stringify([...existing, projectWithPayment]));
+    const updatedProjects = [...existing, projectWithPayment];
+    localStorage.setItem("lumina_projects", JSON.stringify(updatedProjects));
+    fetch('/api/lumina/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'projects', data: updatedProjects }),
+    }).catch(() => {}); // non-blocking for demo
 
     toast.success("Lumina Bundle Packaged", {
       description: "Full human logs + ASCAP justification included. DogePay QR ready.",
@@ -172,7 +178,14 @@ export default function CreationStudio() {
           status: "live",
         };
         const listings = JSON.parse(localStorage.getItem("lumina_listings") || "[]");
-        localStorage.setItem("lumina_listings", JSON.stringify([...listings, listing]));
+        const updatedListings = [...listings, listing];
+        localStorage.setItem("lumina_listings", JSON.stringify(updatedListings));
+        // Persist server-side too
+        fetch('/api/lumina/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'listings', data: updatedListings }),
+        }).catch(() => {});
         toast.success("Listed on Lumina Marketplace", { description: "Visible in /marketplace. Collectors can pay via DogePay." });
         window.location.href = "/marketplace";
       }

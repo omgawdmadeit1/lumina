@@ -20,7 +20,7 @@ Internal planning codename during development: Nextlify.
 
 - **Phase 2 — Visual/UGC + Polish**: Stub ready (easy to expand with your lemonade-craze-ugc patterns).
 
-- **Phase 3 — NFT + Claims Engine**: Strong simulator at `/claims` (Trek-style rarity caches, "claim" that ties to on-chain fortune/voucher flow using your generalized Fortune Cookie + hardhat patterns).
+- **Phase 3 — NFT + Claims Engine**: Strong simulator at `/claims` upgraded: `/api/fortune/sign-voucher` produces EIP712-like signatures + redeemNote ready for FortuneCookieNFT.mintWithSignature (hardhat-base-nft/fortune-cookie-launch). Server persistence via new /api/lumina/* (file-backed in dev for durability across refreshes; replace with Supabase for prod).
 
 - **Phase 4 — Marketplace + Full Cash Loop**: Live at `/marketplace`. Listings from your creations, "Buy/Claim with DOGE" that surfaces the real payment QR. Basic royalties view via dashboard.
 
@@ -61,7 +61,7 @@ Other strong options considered: CreatorForge, HustleLoom, QuantumLoom, TrekForg
 The folder and some internal comments may still reference "nextlify" from the initial scaffold — the public experience is fully Lumina.
 
 ## Current Status (WSL2 + Windows)
-- Fully functional MVP in browser (localStorage prototype): seed → human-gated bible/lyrics/production → real bundle export (.txt + logs) → DogePay URI + QR → list to marketplace → buy/claim flow that records claims.
+- Fully functional MVP in browser + server persistence: seed → human-gated bible/lyrics/production → real bundle export (.txt + logs) → DogePay URI + QR → list to marketplace → buy/claim flow that records claims. Core domain (projects/listings/claims) now also saved server-side via /api/lumina/load + /api/lumina/save (data/*.json) for prototype completeness and better demo durability.
 - All pages (/, /creation, /dashboard, /marketplace, /claims) wired and cross-linked.
 - DogePay uses real qrcode lib + dogecoin: URI (configurable via NEXT_PUBLIC_DOGE_PAY_ADDRESS).
 - Cyber/HUD aesthetic complete (Tesla Trek + plan reuse).

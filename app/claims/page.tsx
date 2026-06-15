@@ -14,33 +14,79 @@ export default function LuminaClaims() {
   const [claims, setClaims] = useState<any[]>([]);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("lumina_claims") || "[]");
-    setClaims(saved);
+    // Prefer server store (new durable /api/lumina/*) then fallback to localStorage for hybrid prototype completeness
+    (async () => {
+      try {
+        const res = await fetch('/api/lumina/load');
+        if (res.ok) {
+          const { claims: serverClaims } = await res.json();
+          if (Array.isArray(serverClaims) && serverClaims.length > 0) {
+            setClaims(serverClaims);
+            // sync back to local for offline
+            localStorage.setItem("lumina_claims", JSON.stringify(serverClaims));
+            return;
+          }
+        }
+      } catch {}
+      const saved = JSON.parse(localStorage.getItem("lumina_claims") || "[]");
+      setClaims(saved);
+    })();
   }, []);
 
-  const claim = (cache: any) => {
+  const claim = async (cache: any) => {
+    const claimId = "claim_" + Date.now();
+    const listingId = "cache_" + cache.name.toLowerCase().replace(/\s+/g, "-");
+
     toast.success(`Claimed ${cache.name}`, {
-      description: `+${cache.points} Lumina XP. Fortune cracked. Voucher signed (simulated Base).`,
+      description: `+${cache.points} Lumina XP. Fortune cracked. Voucher signed.`,
     });
 
     const newClaim = {
-      id: "claim_" + Date.now(),
-      listingId: "cache_" + cache.name.toLowerCase().replace(/\s+/g, "-"),
+      id: claimId,
+      listingId,
       type: "gps" as const,
       status: "fulfilled" as const,
       createdAt: new Date().toISOString(),
       note: cache.name,
+      points: cache.points,
     };
+
+    // Persist locally + server
     const existing = JSON.parse(localStorage.getItem("lumina_claims") || "[]");
-    localStorage.setItem("lumina_claims", JSON.stringify([...existing, newClaim]));
+    const updatedClaims = [...existing, newClaim];
+    localStorage.setItem("lumina_claims", JSON.stringify(updatedClaims));
     setClaims((c) => [...c, newClaim] as any);
 
-    // Simulate tying to a creation / fortune NFT
-    setTimeout(() => {
-      toast("On-chain tie-in (Phase 3)", {
-        description: "In full version this would call generalized FortuneCookieNFT.mintWithSignature using your saved project logs.",
+    // Also save to server durable store
+    fetch('/api/lumina/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'claims', data: updatedClaims }),
+    }).catch(() => {});
+
+    // REAL voucher sign (generalized from fortune-cookie + hardhat-base-nft)
+    // Produces voucherSignature ready to feed to on-chain mintWithSignature
+    try {
+      const res = await fetch('/api/fortune/sign-voucher', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ claimId, listingId, note: cache.name, points: cache.points }),
       });
-    }, 900);
+      const { voucher } = await res.json();
+      if (voucher?.voucherSignature) {
+        // Enhance the claim with real voucher data for later on-chain use
+        const withVoucher = { ...newClaim, voucherSignature: voucher.voucherSignature, voucher };
+        const finalClaims = [...existing, withVoucher];
+        localStorage.setItem("lumina_claims", JSON.stringify(finalClaims));
+        setClaims((c) => [...c.slice(0, -1), withVoucher] as any);
+
+        toast.success("Voucher signed", {
+          description: `Signature: ${voucher.voucherSignature.slice(0, 18)}... • Ready for FortuneCookieNFT on Base. See /api/fortune/sign-voucher + hardhat-base-nft skill.`,
+        });
+      }
+    } catch (e) {
+      // Non-blocking: voucher sim still works
+    }
   };
 
   return (

@@ -9,8 +9,21 @@ export default function LuminaMarketplace() {
   const [listings, setListings] = useState<any[]>([]);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("lumina_listings") || "[]");
-    setListings(saved);
+    (async () => {
+      try {
+        const res = await fetch('/api/lumina/load');
+        if (res.ok) {
+          const { listings: serverListings } = await res.json();
+          if (Array.isArray(serverListings) && serverListings.length > 0) {
+            setListings(serverListings);
+            localStorage.setItem("lumina_listings", JSON.stringify(serverListings));
+            return;
+          }
+        }
+      } catch {}
+      const saved = JSON.parse(localStorage.getItem("lumina_listings") || "[]");
+      setListings(saved);
+    })();
   }, []);
 
   const buy = (listing: any) => {

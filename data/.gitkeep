@@ -1,0 +1,3 @@
+# Lumina server-persisted data (projects, listings, claims) lives here in dev.
+# Ephemeral on deploys without external DB. See /api/lumina/* routes.
+# Safe to gitignore in real (or commit seeds).
