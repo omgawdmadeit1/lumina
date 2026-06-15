@@ -41,11 +41,11 @@ export default function LuminaDashboard() {
   };
 
   // Simulated Plaid Link OAuth flow (matches the real Plaid Link modal experience)
-  // In production:
-  // 1. Call your /api/plaid/create-link-token (server uses plaid client + your PLAID_CLIENT_ID/SECRET)
-  // 2. Use react-plaid-link or <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js">
-  // 3. plaidLink.open({ token: link_token })
-  // 4. On success -> POST /api/plaid/exchange-public-token with public_token -> store access_token + item_id server-side
+  // Real implementation (routes now live at /api/plaid/* ):
+  // 1. POST /api/plaid/create-link-token  → returns { link_token }
+  // 2. Use Plaid Link (react-plaid-link or the CDN script) with the token
+  // 3. On success, POST /api/plaid/exchange-public-token { public_token } → server exchanges + stores access_token securely
+  // Set PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV in .env.local to use the real routes.
   const startPlaidOAuth = (bankName: string) => {
     setSelectedBank(bankName);
     setPlaidStep('connecting');
@@ -297,19 +297,45 @@ export default function LuminaDashboard() {
                       <li>Only transaction history + balances (no transfers)</li>
                       <li>You can revoke access anytime</li>
                     </ul>
+                    <div className="text-[10px] text-white/50 mt-2">
+                      Backend routes ready: <span className="font-mono">/api/plaid/create-link-token</span> + <span className="font-mono">/api/plaid/exchange-public-token</span>
+                    </div>
                   </div>
                 </div>
 
                 <div className="px-8 py-8 bg-black/60 border-t border-white/10 flex flex-col gap-3">
                   <button
+                    onClick={async () => {
+                      try {
+                        const res = await fetch('/api/plaid/create-link-token', { method: 'POST' });
+                        const data = await res.json();
+                        if (data.link_token) {
+                          alert(`Real link_token received (use with Plaid Link):\n\n${data.link_token}\n\nIn a full integration you would now call plaidLink.open({ token: link_token })`);
+                          // For demo we still go to the simulated bank picker
+                          setPlaidStep('select-bank');
+                        } else {
+                          alert('Real route not configured (set PLAID_* env vars) or error: ' + (data.error || 'unknown'));
+                          setPlaidStep('select-bank');
+                        }
+                      } catch (e) {
+                        alert('Could not reach real Plaid route. Falling back to simulation.');
+                        setPlaidStep('select-bank');
+                      }
+                    }}
+                    className="epic-btn w-full py-4 rounded-2xl border border-[#E31937] text-[#E31937] font-semibold flex items-center justify-center gap-2 hover:bg-[#E31937] hover:text-white"
+                  >
+                    <LinkIcon className="h-4 w-4" /> Get Real link_token (from /api/plaid)
+                  </button>
+
+                  <button
                     onClick={() => setPlaidStep('select-bank')}
                     className="epic-btn w-full py-4 rounded-2xl bg-[#E31937] font-semibold flex items-center justify-center gap-2"
                   >
-                    <LinkIcon className="h-4 w-4" /> Continue to Plaid
+                    <LinkIcon className="h-4 w-4" /> Continue with Simulated Plaid Link
                   </button>
                   <button onClick={closePlaidModal} className="py-3 text-xs text-white/50 hover:text-white">Cancel</button>
                   <div className="text-center text-[10px] text-white/40 mt-2">
-                    In production this opens Plaid's hosted OAuth modal with your real institutions.
+                    Real routes are implemented. Add your Plaid credentials to .env.local to use them.
                   </div>
                 </div>
               </>
