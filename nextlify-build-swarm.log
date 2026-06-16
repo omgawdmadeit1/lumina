@@ -1,0 +1,21 @@
+  Finalizing page optimization ...
+
+Route (app)
+Γöî Γùï /
+Γö£ Γùï /_not-found
+Γö£ ╞Æ /api/fortune/sign-voucher
+Γö£ ╞Æ /api/lumina/load
+Γö£ ╞Æ /api/lumina/save
+Γö£ ╞Æ /api/plaid/create-link-token
+Γö£ ╞Æ /api/plaid/exchange-public-token
+Γö£ Γùï /claims
+Γö£ Γùï /creation
+Γö£ Γùï /dashboard
+Γö£ Γùï /marketplace
+Γöö Γùï /receive
+
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+
+Nextlify build for swarm plugs (new SKUs from 8944/8943 etc)

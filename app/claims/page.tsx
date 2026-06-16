@@ -11,6 +11,8 @@ const caches = [
 ];
 
 export default function LuminaClaims() {
+  // TRANSACTIONS/RAILS 1/4 EXT: 75/8902 NFT + 199 crown jewel + new subagent marketing (hour1-marketing-8902-nft-199-crown/ 3 threads/email/one-pager) integrated via plugs from transactions-closer/plug-snippet-add-to-marketplace.js + 2 new payment-product JSONs (nft-claim-75-8902-199-crown.json + fortune-lore-nft-bundle-55-95-8902-199.json). 
+  // After DOGE pay exact + "claim via 8902 fortune-lumina-nft/claim-mint.html or 8914 + get the crown jewel marketing assets": deliver NFT voucher + 8902/8914 claim + 199 crown NFT rights + subagent assets. Record here + cross 8929 150/199 + 8899 + 6 images + verifiers + full 5/6/8-step truth (replace DEMO in 8902/199/8929 + 3 tx JSONs + dogepay.ts + .env + nextlify + fortune claim-mint + new subagent assets first; 0 real). LFG direct 199 crown + 8902 + 8929. See 8902-199-nft-fortune-receiver.html + master index + packet.
   const [claims, setClaims] = useState<any[]>([]);
 
   useEffect(() => {
@@ -105,7 +107,7 @@ export default function LuminaClaims() {
         </div>
 
         <p className="max-w-2xl text-xl text-white/70 mb-10">
-          Inspired by your Tesla Trek + Fortune Cookie system. GPS or code-based claims unlock artist assets with full provenance.
+          Inspired by your Tesla Trek + Fortune Cookie system. GPS or code-based claims unlock artist assets with full provenance. <strong>Cross to 8902: fortune-lumina-nft/claim-mint.html for Fortune Cookie NFT (pay 75 or bundle, then claim voucher). NEW mini Fortune cookie lore/image pack (19.jpg + 2 new 8902 lore gens; 55 DOGE standalone or 199 crown add-on; full provenance, 5/6-step, 0 real truth banner, replace DEMO D7Y7 in 199/8902/8901 + 3 tx JSONs + dogepay.ts). Crosses 8899/8929/8926/8928/8924, raw GitHub, packet, master index. 50% Trek, Cyberbeast 1.25M. Maximize NFT claim volume. LFG.</strong>
         </p>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -128,7 +130,7 @@ export default function LuminaClaims() {
         </div>
 
         <div className="mt-12 text-center text-xs text-white/40">
-          Full version would use device GPS + optional XYO bound witness (your existing tesla_fleet.py + xyo-witness code) → signed voucher → generalized FortuneCookieNFT on Base.
+          Full version would use device GPS + optional XYO bound witness (your existing tesla_fleet.py + xyo-witness code) → signed voucher → generalized FortuneCookieNFT on Base. See full one-hour launch kit (hardhat + assets + scripts) + standalone claim micro HTML in C:\Users\Josep\lumina-transactions-deploy\nft-launch-kit . Real Base deploy + keys needed for on-chain.
         </div>
 
         {claims.length > 0 && (

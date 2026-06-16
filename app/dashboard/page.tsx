@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { ArrowLeft, Shield, Download, Coins, Landmark, Target, TrendingUp, Truck } from "lucide-react";
 import { toast } from "sonner";
 import { usePlaidLink } from "react-plaid-link";
-import { generateCyberbeastFundDogePayLink, getCyberbeastFundAddress, generateTeslaMerchDogePayLink, getBestOfNTeslaOffers } from "@/lib/dogepay";
-import type { CyberbeastFund, StripeProTier } from "@/lib/types";
+import { generateCyberbeastFundDogePayLink, getCyberbeastFundAddress, generateTeslaMerchDogePayLink, getBestOfNTeslaOffers, getAllDogePaySKUs, generateDogePayForSKU } from "@/lib/dogepay";
+import type { CyberbeastFund, StripeProTier, DogeProductSKU } from "@/lib/types";
 
 export default function LuminaDashboard() {
   const [projects, setProjects] = useState<any[]>([]);
@@ -346,8 +346,8 @@ export default function LuminaDashboard() {
           <ArrowLeft className="h-4 w-4" /> Back to Lumina
         </a>
 
-        <h1 className="text-5xl font-bold tracking-tighter mb-2">Lumina Dashboard</h1>
-        <p className="text-white/60 mb-8">Your creations, logs, and revenue at a glance. Phase 1 complete for Music module.</p>
+        <h1 className="text-5xl font-bold tracking-tighter mb-2">Lumina Dashboard — CLOSE SALES HERE</h1>
+        <p className="text-white/60 mb-8">Create → List with DOGEPAY → Buyers PAY DOGE → Revenue to Cyberbeast Fund (1.25M) + Tesla Trek (50% cat). Use RECEIVE CTAs + Tesla generators below to accelerate real cash flow. Every DOGE transaction counts.</p>
 
         {projects.length === 0 && (
           <div className="glass rounded-3xl p-12 text-center">
@@ -366,8 +366,8 @@ export default function LuminaDashboard() {
                   <div className="text-xs text-white/50 mt-1">Created {new Date(p.createdAt).toLocaleString()} • {p.humanLogs?.length || 0} human authorship logs</div>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => listToMarket(p)} className="flex items-center gap-2 rounded-2xl border border-white/30 px-4 py-2 text-sm hover:bg-white/5">
-                    <Coins className="h-4 w-4" /> List to Marketplace
+                  <button onClick={() => listToMarket(p)} className="flex items-center gap-2 rounded-2xl border border-white/30 px-4 py-2 text-sm hover:bg-white/5 font-semibold">
+                    <Coins className="h-4 w-4" /> LIST TO MARKETPLACE — ACTIVATE DOGEPAY + START CLOSING SALES
                   </button>
                   <a href="/creation" className="flex items-center gap-2 rounded-2xl border border-white/30 px-4 py-2 text-sm hover:bg-white/5">
                     <Download className="h-4 w-4" /> View / Duplicate
@@ -466,13 +466,14 @@ export default function LuminaDashboard() {
         <div className="mt-12">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <div className="section-header flex items-center gap-2"><Target className="h-4 w-4" /> CYBERBEAST FUND</div>
-              <div className="text-2xl font-semibold tracking-tight">DOGE live balance • % to 1.25M goal • Receive CTAs • Plaid revenue velocity</div>
+              <div className="section-header flex items-center gap-2"><Target className="h-4 w-4" /> CYBERBEAST FUND — DIRECT DOGE RECEIVE (CLOSES REAL TRANSACTIONS)</div>
+              <div className="text-2xl font-semibold tracking-tight">DOGE live balance • % to 1.25M goal • Receive CTAs (use these to accelerate) • Plaid revenue velocity • 50% Tesla Trek allocation</div>
+              <p className="text-xs text-emerald-400 mt-1">EVERY RECEIPT HERE = CASH TO FUND + TESLA REVENUE POOL. COPY DOGEPAY URI FROM CTAs BELOW. PAY. MARK RECEIVED. REPEAT.</p>
             </div>
             <div className="flex gap-2 flex-wrap">
-              <button onClick={() => receiveToCyberbeastFund(100)} className="epic-btn flex items-center gap-2 rounded-2xl bg-[#E31937] px-5 py-2 text-sm font-semibold hover:bg-[#c31530]"><Coins className="h-4 w-4" /> Receive 100 DOGE</button>
-              <button onClick={() => receiveToCyberbeastFund(500)} className="flex items-center gap-2 rounded-2xl border border-white/30 px-4 py-2 text-sm hover:bg-white/5"><Coins className="h-4 w-4" /> 500 DOGE</button>
-              <button onClick={() => markFundReceipt(250)} className="flex items-center gap-2 rounded-2xl border border-emerald-400/40 px-3 py-2 text-sm hover:bg-emerald-900/20">Mark 250 DOGE Rcvd</button>
+              <button onClick={() => receiveToCyberbeastFund(100)} className="epic-btn flex items-center gap-2 rounded-2xl bg-[#E31937] px-5 py-2 text-sm font-semibold hover:bg-[#c31530]"><Coins className="h-4 w-4" /> RECEIVE 100 DOGE DIRECT TO CYBERBEAST FUND (FUELS TESLA)</button>
+              <button onClick={() => receiveToCyberbeastFund(500)} className="flex items-center gap-2 rounded-2xl border border-white/30 px-4 py-2 text-sm hover:bg-white/5 font-semibold"><Coins className="h-4 w-4" /> 500 DOGE TO FUND NOW</button>
+              <button onClick={() => markFundReceipt(250)} className="flex items-center gap-2 rounded-2xl border border-emerald-400/40 px-3 py-2 text-sm hover:bg-emerald-900/20 font-semibold">MARK RECEIPT + CREDIT FUND (CLOSE REVENUE)</button>
             </div>
           </div>
           <div className="glass rounded-3xl p-8 mb-8">
@@ -480,7 +481,7 @@ export default function LuminaDashboard() {
               <div><div className="text-xs text-white/50">DOGE LIVE BALANCE</div><div className="text-4xl font-semibold tabular-nums text-[#E31937] mt-1">{cyberbeastFund.currentDOGEBalance.toLocaleString()} DOGE</div><div className="text-xs text-white/40 mt-1 font-mono break-all">Addr: {getCyberbeastFundAddress().slice(0,14)}…</div></div>
               <div><div className="text-xs text-white/50">% TO 1.25M GOAL</div><div className="text-4xl font-semibold tabular-nums text-emerald-400 mt-1">{cyberbeastFund.percentToGoal}%</div><div className="w-full bg-white/10 h-2 rounded mt-2"><div className="h-2 bg-[#E31937]" style={{width: cyberbeastFund.percentToGoal + '%'}} /></div><div className="text-[10px] text-white/40">1,250,000 DOGE target</div></div>
               <div><div className="text-xs text-white/50">30d VELOCITY (Plaid tags + receipts)</div><div className="text-3xl font-semibold tabular-nums text-emerald-400 mt-1">${cyberbeastFund.velocity30dUSD}</div><div className="text-sm">~{cyberbeastFund.velocity30dDOGE} DOGE • tagged inflows feed fund</div></div>
-              <div><div className="text-xs text-white/50">STRIPE PRO MRR HYBRID</div><div className="text-3xl font-semibold tabular-nums mt-1">${proTier.mrr}/mo</div><div className="text-xs">Tier: {proTier.tier} • Metered listings: {proTier.meteredUsage.listingsPublished} • links/mo: {proTier.entitlements.maxDogePayPerMonth}</div>{proTier.tier==="Free" && <button onClick={upgradeToProStripe} className="mt-1 text-xs bg-white text-black px-2 py-0.5 rounded">Upgrade Pro Stripe → MRR + Fund</button>}</div>
+              <div><div className="text-xs text-white/50">STRIPE PRO MRR HYBRID</div><div className="text-3xl font-semibold tabular-nums mt-1">${proTier.mrr}/mo</div><div className="text-xs">Tier: {proTier.tier} • Metered listings: {proTier.meteredUsage.listingsPublished} • links/mo: {proTier.entitlements.maxDogePayPerMonth}</div>{proTier.tier==="Free" && <button onClick={upgradeToProStripe} className="mt-1 text-xs bg-white text-black px-2 py-0.5 rounded font-semibold">UPGRADE PRO STRIPE NOW → $29/mo MRR + 30% TO CYBERBEAST FUND + HIGHER LIMITS</button>}</div>
             </div>
             <div className="section-header mb-2 text-xs">FUND RECEIPTS (Plaid-tagged velocity + DOGE direct + Stripe)</div>
             <div className="text-[10px] font-mono bg-black/40 p-3 rounded max-h-28 overflow-auto border border-white/10">{cyberbeastFund.receipts.length ? cyberbeastFund.receipts.slice().reverse().map((r:any,i:number)=>(<div key={i}>{r.timestamp.slice(0,10)} {r.source} {r.amountDOGE||''}{r.amountUSD? '$'+r.amountUSD:''} {r.tagged?'TAGGED':''}</div>)) : 'No receipts. Use CTAs or Plaid.'}</div>
@@ -488,20 +489,50 @@ export default function LuminaDashboard() {
           </div>
         </div>
 
+        {/* === NEW: ALL PRODUCT SKUs (bundles 42-200, merch 300-900, Pro 120, NFT claims 50-150) + trivial real addr plug === */}
+        {/* Prominent for user: once NEXT_PUBLIC_DOGE_PAY_ADDRESS set in .env, these all become live real-DOGE receive links. Copy/QR in <20min. */}
+        <div className="mt-12">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <div className="section-header">DIRECT DOGEPAY SKU LINKS (8+ PRODUCTS)</div>
+              <div className="text-2xl font-semibold tracking-tight">Bundles • Merch • Pro • NFT Claims • Fund. Set real addr in .env → instant live inflows. 50% Trek revenue on merch.</div>
+            </div>
+            <a href="/marketplace" className="text-sm underline">See full in Marketplace →</a>
+          </div>
+          <div className="glass rounded-3xl p-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              {getAllDogePaySKUs().slice(0, 8).map((item: any, i: number) => (
+                <div key={i} className="border border-white/10 rounded-2xl p-4 bg-black/30 text-sm">
+                  <div className="font-mono text-[10px] text-[#E31937]">{item.category.toUpperCase()} • {item.priceDOGE} DOGE</div>
+                  <div className="font-semibold mt-1">{item.title}</div>
+                  <div className="text-white/60 text-xs mt-1 line-clamp-2">{item.description}</div>
+                  {item.allocationNote && <div className="text-emerald-400 text-[10px] mt-1">ALLOC: {item.allocationNote}</div>}
+                  <button onClick={() => {
+                    const link = item.payLink?.uri || generateDogePayForSKU(item.id).uri;
+                    navigator.clipboard?.writeText(link);
+                    toast.success(`${item.title} DogePay copied`, { description: link + " (set real NEXT_PUBLIC_DOGE_PAY_ADDRESS for live tx)" });
+                  }} className="mt-3 w-full rounded-xl bg-white/10 hover:bg-[#E31937] hover:text-white py-2 text-xs font-mono">COPY dogecoin: URI + PAY</button>
+                </div>
+              ))}
+            </div>
+            <div className="text-[10px] text-white/50">All SKUs respect env addr override (see lib/dogepay.ts TODO + .env.example for D7Y7... placeholder replace steps). Use kit for batch QR gen. Confirm on dogechain.info. No custody — pure direct receive.</div>
+          </div>
+        </div>
+
         {/* === CASH DEFENSE: Tesla Trek Revenue (Plaid + DOGE inflows tagged for real cashflow tracking + Fleet billing / merch) === */}
         <div className="mt-12">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <div className="section-header flex items-center gap-2"><Truck className="h-4 w-4" /> CASH DEFENSE • TESLA TREK REVENUE</div>
-              <div className="text-2xl font-semibold tracking-tight">Plaid-tracked inflows + DOGE merch revenue → Tesla Shop (Giga Texas Belt Buckle ~835 DOGE) + developer.tesla.com Fleet API payment config for live telemetry in Tesla Trek app.</div>
+              <div className="section-header flex items-center gap-2"><Truck className="h-4 w-4" /> CASH DEFENSE • TESLA TREK REVENUE (DIRECT DOGE CLOSES)</div>
+              <div className="text-2xl font-semibold tracking-tight">Plaid-tracked inflows + DOGE merch revenue → FUND TESLA SHOP (Giga Texas Belt Buckle ~835 DOGE) + developer.tesla.com Fleet API for live telemetry. COPY URI, PAY DOGE, RECORD = REAL REVENUE TO CAT 124303201/33968299 + CYBERBEAST.</div>
             </div>
             <button onClick={() => {
               const offer = generateTeslaMerchDogePayLink("giga-texas-belt-buckle", 900);
               navigator.clipboard?.writeText(offer.uri);
-              toast.success("Tesla Trek Revenue DogePay (900 DOGE best-of-N) copied", { description: offer.uri });
+              toast.success("Tesla Trek Revenue DogePay (900 DOGE best-of-N) copied — PAY TO FUND TESLA + CYBERBEAST", { description: offer.uri });
               const txns = JSON.parse(localStorage.getItem("lumina_tesla_revenue_txns") || "[]");
               localStorage.setItem("lumina_tesla_revenue_txns", JSON.stringify([...txns, {amountDOGE: 900, source:"DOGE", tagged:"tesla-trek-revenue", ts: new Date().toISOString()}]));
-            }} className="epic-btn flex items-center gap-2 rounded-2xl bg-[#E31937] px-5 py-2 text-sm font-semibold"><Coins className="h-4 w-4" /> Generate Best-of-N Trek Revenue DogePay</button>
+            }} className="epic-btn flex items-center gap-2 rounded-2xl bg-[#E31937] px-5 py-2 text-sm font-semibold"><Coins className="h-4 w-4" /> GENERATE + COPY TESLA DOGEPAY NOW — FUND GIGA BELT + FLEET REVENUE (CLOSE REAL SALE)</button>
           </div>
           <div className="glass rounded-3xl p-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 text-sm">

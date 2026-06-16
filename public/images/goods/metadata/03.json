@@ -1,0 +1,22 @@
+{
+  "name": "Tesla Trek Pass #03",
+  "description": "Lumina Fortune Cookie NFT - Phygital claim voucher. Limited 1/10. Gas-only mint on Base.",
+  "image": "https://nextlify-iuxw4xpgy-tesla-trek.vercel.app/images/goods/tesla-trek-red.jpg",
+  "external_url": "https://nextlify-iuxw4xpgy-tesla-trek.vercel.app/claims",
+  "attributes": [
+    {
+      "trait_type": "Edition",
+      "value": "3/10"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare"
+    },
+    {
+      "trait_type": "Fortune",
+      "value": "42km later the vault opens. Full Dream Kit inside."
+    }
+  ],
+  "fortune": "42km later the vault opens. Full Dream Kit inside.",
+  "tokenURI": "https://nextlify-iuxw4xpgy-tesla-trek.vercel.app/images/goods/metadata/03.json"
+}

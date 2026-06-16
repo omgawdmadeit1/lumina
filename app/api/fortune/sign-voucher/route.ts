@@ -27,6 +27,7 @@ export async function POST(request: Request) {
     };
 
     // Mock EIP-712 style signature (real version would be signTypedData of the payload)
+    // PRODUCTION: replace with proper EIP712 + ethers.signTypedData or viem using server-side private key (NEVER client). See nft-launch-kit for real demo signer script.
     const dataToSign = JSON.stringify(payload);
     const mockSignature = '0x' + crypto.createHmac('sha256', 'LUMINA-DEMO-SIGNER-KEY-FOR-TESLA-TREK-FORTUNE')
       .update(dataToSign)

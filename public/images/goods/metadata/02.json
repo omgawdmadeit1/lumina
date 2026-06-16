@@ -1,0 +1,22 @@
+{
+  "name": "Lumina Quantum #02",
+  "description": "Lumina Fortune Cookie NFT - Phygital claim voucher. Limited 1/10. Gas-only mint on Base.",
+  "image": "https://nextlify-iuxw4xpgy-tesla-trek.vercel.app/images/goods/grok-00d7a82d-0745-43d6-9508-0cd6854651a5.jpg",
+  "external_url": "https://nextlify-iuxw4xpgy-tesla-trek.vercel.app/claims",
+  "attributes": [
+    {
+      "trait_type": "Edition",
+      "value": "2/10"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare"
+    },
+    {
+      "trait_type": "Fortune",
+      "value": "Small-town dirt remembers the tire marks. Stems unlocked."
+    }
+  ],
+  "fortune": "Small-town dirt remembers the tire marks. Stems unlocked.",
+  "tokenURI": "https://nextlify-iuxw4xpgy-tesla-trek.vercel.app/images/goods/metadata/02.json"
+}

@@ -164,6 +164,16 @@ export interface TeslaPayProduct {
   isFleet?: boolean;
 }
 
+// New: DogeProductSKU for batch kit + marketplace expansion (from dogepay.ts DOGE_PRODUCT_SKUS)
+export interface DogeProductSKU {
+  id: string;
+  title: string;
+  priceDOGE: number;
+  category: "bundle" | "merch" | "pro" | "nft-claim" | "fleet" | "fund";
+  description: string;
+  allocationNote?: string;
+}
+
 // Helper for the famous BRANCH 27 example (used in stubs for fidelity)
 export const QUANTUM_DIRT_ROAD_EXAMPLE = {
   title: "Quantum Dirt Road",
