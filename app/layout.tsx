@@ -16,10 +16,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lumina | Creation to Cash for Any Artist",
-  description: "The epic all-in-one creator OS. From seed idea to packaged assets, rights-proof logs, marketplace listings, DogePay links, NFT drops, real-world claims — and real cash. Human authorship first.",
+  title: "Tesla Trek | Premium Tesla Expeditions & Lifestyle | A Division of LVL X Ltd Co",
+  description: "Tesla Trek is the premium expedition, provenance, and lifestyle division of LVL X Ltd Co. Real-world Tesla adventures, GPS-enabled claims, limited authenticated merch, and direct owner ecosystem programs. Headquarters: 6167 GA 254, Cleveland, Georgia 30528 USA. Contact: joe@lvlltd.com | joe@tesla-trek.com | 706-768-0803",
   icons: {
     icon: "/next.svg",
+  },
+  openGraph: {
+    title: "Tesla Trek | Premium Tesla Expeditions & Lifestyle",
+    description: "A Division of LVL X Ltd Co • 6167 GA 254, Cleveland, Georgia 30528 USA",
+    images: [{ url: "/next.svg" }],
   },
 };
 

@@ -79,6 +79,23 @@ See the full approved plan (including storage/pricing model for the marketplace,
 
 ---
 
+## MONETIZATION AGENT + TRANSACTIONS KIT: DogePay + Stripe Live Hybrid + Cyberbeast Fund + Fortune NFT Flow (Billingplane)
+
+**CRITICAL USER TODO FOR REAL INFLOWS (plug real DOGE addr <20min velocity):**
+See lib/dogepay.ts (prominent TODO block at top with exact replace steps + D7Y7v5vL3kQvN9pX2mR8sT4wU6iO0pA1sD3fG5hJ7kL history example placeholder).
+.env.example has dedicated section + steps.
+1. cp .env.example .env.local
+2. Replace NEXT_PUBLIC_DOGE_PAY_ADDRESS with your real receive-only DOGE addr (D...).
+3. (Recommended) Set dedicated NEXT_PUBLIC_CYBERBEAST_FUND_DOGE and NEXT_PUBLIC_TESLA_TREK_DOGE.
+4. npm run dev (or vercel --prod after env set).
+5. Use /dashboard SKU section, /marketplace, or standalone kit to gen links + QRs.
+6. Share URIs; pay via any DOGE wallet; confirm on https://dogechain.info/address/ADDR (exact memo match for verifier).
+GUARDRAILS: No custody/secrets/server keys for DOGE. Explorer-only confirmation. 50% Trek revenue (124303201/33968299) on merch SKUs. Ready for live real inflows TODAY.
+
+New in this batch: 13 DOGE_PRODUCT_SKUS (8-10+ listed): bundles 42/69/120/150/200 DOGE, merch 300/420/850/900, Pro 120, NFT-claims 50/150, fund 100. All generate via env addr. See getAllDogePaySKUs + generateDogePayForSKU in lib/dogepay.ts.
+
+Full 1hr swarm outputs audit + activation details (exact goods counts: 6 core images + 2 new generated grok images + 4 bibles + 13 zip bundles; marketing: 12+ threads + 3+ emails + 50+ pages; tx rails: 3 receivers x15-20+ copies + 4 verifiers + 20+ other HTMLs; per-crown 199DOGE/Cyberbeast/Tesla 5-step cash commands with exact file paths): C:\Users\Josep\LUMINA-1HR-SWARM-ACTIVATION-PACKET.md (all infra/goods/marketing/tx ready; 0 real DOGE received on DEMO addrs; revenue velocity via user 5 steps; 15 billing rules + truth enforced).
+
 ## MONETIZATION AGENT: DogePay + Stripe Live Hybrid + Cyberbeast Fund Enhancement (Billingplane)
 
 **Charter (this task):** Ramp MRR (Pro tiers + metered on volume/links) and direct DOGE receipts into the app for the Cyberbeast Fund. No other teams.
@@ -141,6 +158,8 @@ See the full approved plan (including storage/pricing model for the marketplace,
 **Gates passed:** 15 rules checklist above + security (no client secrets, server Plaid exchange already, fund addr isolated). All changes scoped to DogePay + Stripe + fund tracker in this app. Ready for live hybrid.
 
 **Evidence sources in workspace:** current dashboard cashflow + Plaid routes + dogepay lib + income-accelerator billingplane patterns (Stripe tiers/metered) + TeslaTrek Stripe+ P laid hybrid demo + doge_forge payments.
+
+Full 1hr swarm outputs audit + activation details (exact goods counts: 6 core images + 2 new generated grok images + 4 bibles + 13 zip bundles; marketing: 12+ threads + 3+ emails + 50+ pages; tx rails: 3 receivers x15-20+ copies + 4 verifiers + 20+ other HTMLs; per-crown 199DOGE/Cyberbeast/Tesla 5-step cash commands with exact file paths): C:\Users\Josep\LUMINA-1HR-SWARM-ACTIVATION-PACKET.md (all infra/goods/marketing/tx ready; 0 real DOGE received on DEMO addrs; revenue velocity via user 5 steps; 15 billing rules + truth enforced).
 
 Run: cd C:\Users\Josep\nextlify ; npm run dev  → see new Fund tracker in /dashboard. Use CTAs + Plaid connect + "Upgrade Pro" to ramp.
 
